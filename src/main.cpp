@@ -58,6 +58,11 @@ int main(void)
 
 
 
+	VertexLayout layout;
+	layout.addLayout(0, 3);
+	layout.addLayout(1, 2);
+	layout.addLayout(2, 3);
+
 	Assimp::Importer importer;
 
 
@@ -65,22 +70,12 @@ int main(void)
 
 	Shader shader("res/shaders/test.vs","res/shaders/test.fs");
 	shader.compile();
-	VertexLayout layout;
-	layout.addLayout(0, 3);
-	layout.addLayout(1, 2);
+
+	Mesh mesh("res/models/Dinklage.obj",layout,shader,0);
+
 	Texture2D tex("res/textures/checkers.png",GL_RGB,false);
 	tex.Bind(1);
 
-
-	VertexLayout layout2;
-	layout2.addLayout(0, 3);
-	layout2.addLayout(1, 2);
-	layout2.addLayout(2, 3);
-	Mesh mesh1(vertices,4,indices,6,layout,shader);
-	Mesh mesh2(vertices,4,indices,6,layout,shader);
-	Mesh mesh3("res/models/Dinklage.obj",layout2,shader,0);
-	mesh1.transform*=glm::translate(mesh1.transform,glm::vec3(-2.0,0.0,0.0));
-	mesh2.transform*=glm::translate(mesh2.transform,glm::vec3( 2.0,0.0,0.0));
 
 
 	glm::mat4 proj=glm::perspective(glm::radians(45.0f), WIDTH/((float)HEIGHT),0.1f, 20.0f);
@@ -102,8 +97,6 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 		glm::vec3 col(1.0,0.0,0.0);
 
-		mesh1.transform*=glm::rotate(glm::mat4(1.0f), glm::radians(-0.1f),glm::vec3(0.0,1.0,0.0));
-		mesh2.transform*=glm::rotate(glm::mat4(1.0f), glm::radians( 0.1f),glm::vec3(0.0,1.0,0.0));
 		//mesh3.transform*=glm::rotate(glm::mat4(1.0f), glm::radians( 0.5f),glm::vec3(0.0,1.0,0.0));
 		theta+=0.01f;	
 		float r=4.0f;
@@ -121,14 +114,9 @@ int main(void)
 		shader.setVec3("material.specular",glm::vec3(0.1f));
 		shader.setFloat("material.shininess",32.0f);
 		shader.setInt("tex1",1);
-		//mesh1.Bind();
-		//mesh1.Draw();
 
-		//mesh2.Bind();
-		//mesh2.Draw();
-
-		mesh3.Bind();
-		mesh3.Draw();
+		mesh.Bind();
+		mesh.Draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
