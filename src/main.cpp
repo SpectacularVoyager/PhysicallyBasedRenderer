@@ -16,17 +16,19 @@
 void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
 		GLenum severity, GLsizei length,
 		const GLchar* msg, const void* data);
-float vertices[] = {
-     1.0f,  1.0f, 0.0f,1.0f,1.0f,
-     1.0f, -1.0f, 0.0f,1.0f,0.0f,
-    -1.0f, -1.0f, 0.0f,0.0f,0.0f,
-    -1.0f,  1.0f, 0.0f,0.0f,1.0f,
-};
-unsigned int indices[] = {  // note that we start from 0!
-    0, 1, 3,   // first triangle
-    1, 2, 3    // second triangle
-};  
-#define WIDTH  600
+/**
+	*float vertices[] = {
+	*     1.0f,  1.0f, 0.0f,1.0f,1.0f,
+	*     1.0f, -1.0f, 0.0f,1.0f,0.0f,
+	*    -1.0f, -1.0f, 0.0f,0.0f,0.0f,
+	*    -1.0f,  1.0f, 0.0f,0.0f,1.0f,
+	*};
+	*unsigned int indices[] = {  // note that we start from 0!
+	*    0, 1, 3,   // first triangle
+	*    1, 2, 3    // second triangle
+	*};
+*/ 
+#define WIDTH  900
 #define HEIGHT 600
 
 int main(void)
@@ -63,25 +65,23 @@ int main(void)
 	layout.addLayout(1, 2);
 	layout.addLayout(2, 3);
 
-	Assimp::Importer importer;
 
-
-
-
-	Shader shader("res/shaders/test.vs","res/shaders/test.fs");
+	Shader shader("res/shaders/blin/blin.vs","res/shaders/blin/blin.fs");
 	shader.compile();
 
-	Mesh mesh("res/models/Dinklage.obj",layout,shader,0);
+	Mesh mesh("res/models/sphere.obj",layout,shader,0);
+	//Mesh mesh("res/models/Dinklage.obj",layout,shader,0);
 
-	Texture2D tex("res/textures/checkers.png",GL_RGB,false);
+	Texture2D tex("res/models/simpleGrass/Dry_Pebbles_Grassy_[4K]_Diffuse.jpg",GL_RGB,false);
+
 	tex.Bind(1);
 
 
 
 	glm::mat4 proj=glm::perspective(glm::radians(45.0f), WIDTH/((float)HEIGHT),0.1f, 20.0f);
-	glm::vec3 viewPos(0.0f,2.0f,4.0f);
+	glm::vec3 viewPos(0.0f,0.0f,10.0f);
 	glm::mat4 view=glm::translate(glm::mat4(1.0),-viewPos);
-	glm::vec3 lightPos(4.0f,3.0f,4.0f);
+	glm::vec3 lightPos(3.0f,4.0f,4.0f);
 
 
 	shader.use();
@@ -97,22 +97,16 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 		glm::vec3 col(1.0,0.0,0.0);
 
-		//mesh3.transform*=glm::rotate(glm::mat4(1.0f), glm::radians( 0.5f),glm::vec3(0.0,1.0,0.0));
+		//mesh.transform*=glm::rotate(glm::mat4(1.0f), glm::radians( 0.5f),glm::vec3(0.0,1.0,0.0));
 		theta+=0.01f;	
 		float r=4.0f;
-		lightPos=glm::vec3(r*std::cos(theta),3.0f,r*std::sin(theta));
+		lightPos=glm::vec3(r*std::cos(theta),2.0f,r*std::sin(theta));
 		
 		shader.setMat4("view",view);
 		shader.setMat4("proj",proj);
 		shader.setVec3("lightPos",lightPos);
 		shader.setVec3("viewPos",viewPos);
 
-		shader.setVec3("light.position",lightPos);
-		shader.setVec3("light.color",glm::vec3(4.0f));
-
-		shader.setVec3("material.diffuse",glm::vec3(1.0f, 0.5f, 0.31f));
-		shader.setVec3("material.specular",glm::vec3(0.1f));
-		shader.setFloat("material.shininess",32.0f);
 		shader.setInt("tex1",1);
 
 		mesh.Bind();
