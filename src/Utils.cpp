@@ -1,5 +1,6 @@
 #include<GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <cstdlib>
 #include<stdio.h>
 
 void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
@@ -74,9 +75,11 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
         break;
     }
 
+	int _exit=0;
     switch (severity) {
     case GL_DEBUG_SEVERITY_HIGH:
         _severity = "HIGH";
+		_exit=1;
         break;
 
     case GL_DEBUG_SEVERITY_MEDIUM:
@@ -97,4 +100,6 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
     }
 
     printf("%d: %s of %s severity, raised from %s: %s\n", id, _type, _severity, _source, msg);
+	if(_exit==1)
+	exit(-1);
 }

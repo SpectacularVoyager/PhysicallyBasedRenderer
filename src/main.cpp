@@ -72,16 +72,22 @@ int main(void)
 	Mesh mesh("res/models/sphere.obj",layout,shader,0);
 	//Mesh mesh("res/models/Dinklage.obj",layout,shader,0);
 
-	Texture2D tex("res/models/simpleGrass/Dry_Pebbles_Grassy_[4K]_Diffuse.jpg",GL_RGB,false);
+	Texture2D albedo("res/models/rusted/albedo.png",GL_RGBA,false);
+	Texture2D norm("res/models/rusted/normal.png",GL_RGB,false);
+	Texture2D metallic("res/models/rusted/metallic.png",GL_RED,false);
+	Texture2D roughness("res/models/rusted/roughness.png",GL_RED,false);
 
-	tex.Bind(1);
+	albedo.Bind(0);
+	norm.Bind(1);
+	metallic.Bind(2);
+	roughness.Bind(3);
 
 
 
 	glm::mat4 proj=glm::perspective(glm::radians(45.0f), WIDTH/((float)HEIGHT),0.1f, 20.0f);
 	glm::vec3 viewPos(0.0f,0.0f,10.0f);
 	glm::mat4 view=glm::translate(glm::mat4(1.0),-viewPos);
-	glm::vec3 lightPos(3.0f,4.0f,4.0f);
+	glm::vec3 lightPos(0.0f,0.0f,10.0f);
 
 
 	shader.use();
@@ -99,15 +105,18 @@ int main(void)
 
 		//mesh.transform*=glm::rotate(glm::mat4(1.0f), glm::radians( 0.5f),glm::vec3(0.0,1.0,0.0));
 		theta+=0.01f;	
-		float r=4.0f;
-		lightPos=glm::vec3(r*std::cos(theta),2.0f,r*std::sin(theta));
+		float r=8.0f;
+		lightPos=glm::vec3(r*std::cos(theta),0.0f,r*std::sin(theta));
 		
 		shader.setMat4("view",view);
 		shader.setMat4("proj",proj);
 		shader.setVec3("lightPos",lightPos);
 		shader.setVec3("viewPos",viewPos);
 
-		shader.setInt("tex1",1);
+		shader.setInt("albedoMap",0);
+		shader.setInt("normalMap",1);
+		shader.setInt("metallicMap",2);
+		shader.setInt("roughnessMap",3);
 
 		mesh.Bind();
 		mesh.Draw();

@@ -16,8 +16,8 @@ out vec2 tex;
 
 void main()
 {
-    gl_Position = proj*view*model*vec4(aPos, 1.0); // see how we directly give a vec3 to vec4's constructor
-	norm=normalize(transform_norm * aNorm);
 	tex=texCoord;
     FragPos = vec3(model * vec4(aPos, 1.0));
+	norm=normalize(transform_norm * aNorm);
+    gl_Position = proj*view*vec4(FragPos,1.0); // see how we directly give a vec3 to vec4's constructor
 }

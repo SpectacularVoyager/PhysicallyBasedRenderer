@@ -23,7 +23,7 @@ uniform sampler2D tex1;
 void main()
 {
 
-	vec4 col=texture(tex1,tex);
+	vec4 col=pow(texture(tex1,tex),vec3(2.2));
 	vec3 lightDir=normalize(light.position-FragPos);
 	float distance=length(light.position-FragPos);
 	lightDir=normalize(lightDir);
