@@ -1,6 +1,5 @@
-#include "include/Mesh.h"
-#include <glm/matrix.hpp>
 
+#include "include/Mesh.h"
 
 Mesh::Mesh( float* vertices, int n_vert
 		, unsigned int* indices, int n_ind
@@ -31,6 +30,9 @@ void Mesh::Unbind(){
 }
 
 void Mesh::Draw(){
+	glDrawElements(GL_TRIANGLES,n_ind,GL_UNSIGNED_INT,0);
+}
+void Mesh::DrawTransform(){
 	shader.setMat4("model",transform);
 	glm::mat3 norm=glm::transpose(glm::inverse(transform));
 	shader.setMat3("transform_norm",norm);

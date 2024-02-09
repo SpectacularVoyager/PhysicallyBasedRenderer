@@ -15,6 +15,8 @@ add_executable(project
 	src/VertexLayout.cpp
 	src/Mesh.cpp
 	src/Texture.cpp
+	src/TextureCube.cpp
+	src/PBRMaterial.cpp
 	)
 
 find_package(GLEW REQUIRED)

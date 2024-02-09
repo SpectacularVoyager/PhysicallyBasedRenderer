@@ -169,6 +169,33 @@ src/Mesh.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/project.dir/build.make CMakeFiles/project.dir/src/Mesh.cpp.s
 .PHONY : src/Mesh.cpp.s
 
+src/PBRMaterial.o: src/PBRMaterial.cpp.o
+
+.PHONY : src/PBRMaterial.o
+
+# target to build an object file
+src/PBRMaterial.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project.dir/build.make CMakeFiles/project.dir/src/PBRMaterial.cpp.o
+.PHONY : src/PBRMaterial.cpp.o
+
+src/PBRMaterial.i: src/PBRMaterial.cpp.i
+
+.PHONY : src/PBRMaterial.i
+
+# target to preprocess a source file
+src/PBRMaterial.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project.dir/build.make CMakeFiles/project.dir/src/PBRMaterial.cpp.i
+.PHONY : src/PBRMaterial.cpp.i
+
+src/PBRMaterial.s: src/PBRMaterial.cpp.s
+
+.PHONY : src/PBRMaterial.s
+
+# target to generate assembly for a file
+src/PBRMaterial.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project.dir/build.make CMakeFiles/project.dir/src/PBRMaterial.cpp.s
+.PHONY : src/PBRMaterial.cpp.s
+
 src/Shader.o: src/Shader.cpp.o
 
 .PHONY : src/Shader.o
@@ -222,6 +249,33 @@ src/Texture.s: src/Texture.cpp.s
 src/Texture.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/project.dir/build.make CMakeFiles/project.dir/src/Texture.cpp.s
 .PHONY : src/Texture.cpp.s
+
+src/TextureCube.o: src/TextureCube.cpp.o
+
+.PHONY : src/TextureCube.o
+
+# target to build an object file
+src/TextureCube.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project.dir/build.make CMakeFiles/project.dir/src/TextureCube.cpp.o
+.PHONY : src/TextureCube.cpp.o
+
+src/TextureCube.i: src/TextureCube.cpp.i
+
+.PHONY : src/TextureCube.i
+
+# target to preprocess a source file
+src/TextureCube.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project.dir/build.make CMakeFiles/project.dir/src/TextureCube.cpp.i
+.PHONY : src/TextureCube.cpp.i
+
+src/TextureCube.s: src/TextureCube.cpp.s
+
+.PHONY : src/TextureCube.s
+
+# target to generate assembly for a file
+src/TextureCube.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project.dir/build.make CMakeFiles/project.dir/src/TextureCube.cpp.s
+.PHONY : src/TextureCube.cpp.s
 
 src/Utils.o: src/Utils.cpp.o
 
@@ -316,12 +370,18 @@ help:
 	@echo "... src/Mesh.o"
 	@echo "... src/Mesh.i"
 	@echo "... src/Mesh.s"
+	@echo "... src/PBRMaterial.o"
+	@echo "... src/PBRMaterial.i"
+	@echo "... src/PBRMaterial.s"
 	@echo "... src/Shader.o"
 	@echo "... src/Shader.i"
 	@echo "... src/Shader.s"
 	@echo "... src/Texture.o"
 	@echo "... src/Texture.i"
 	@echo "... src/Texture.s"
+	@echo "... src/TextureCube.o"
+	@echo "... src/TextureCube.i"
+	@echo "... src/TextureCube.s"
 	@echo "... src/Utils.o"
 	@echo "... src/Utils.i"
 	@echo "... src/Utils.s"

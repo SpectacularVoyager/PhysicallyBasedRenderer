@@ -1,3 +1,4 @@
+#pragma once
 #include"VertexLayout.h"
 #include"Shader.h"
 #include <glm/fwd.hpp>
@@ -26,8 +27,10 @@ class Mesh{
 
 		Mesh(const std::string& path,VertexLayout& layout,Shader& shader,int idx);
 		void Bind();
+		void DrawTransform();
 		void Unbind();
 		void Draw();
+		Shader& getShader(){return shader;}
 		~Mesh();
 };
 
