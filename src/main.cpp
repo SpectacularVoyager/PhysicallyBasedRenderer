@@ -28,8 +28,8 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
 	*    1, 2, 3    // second triangle
 	*};
 */ 
-#define WIDTH  900
-#define HEIGHT 600
+#define WIDTH  1920
+#define HEIGHT 1080
 
 int main(void)
 {
@@ -41,6 +41,7 @@ int main(void)
 
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World", NULL, NULL);
+    //window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World", glfwGetPrimaryMonitor(), NULL);
     if (!window)
     {
         glfwTerminate();
@@ -57,6 +58,10 @@ int main(void)
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(GLDebugMessageCallback, NULL);
     glEnable(GL_DEPTH_TEST);
+
+	//Anti-Aliasing
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glEnable(GL_MULTISAMPLE);  
 
 
 
