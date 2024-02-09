@@ -3,7 +3,7 @@
 #include"Texture.h"
 #include <glm/fwd.hpp>
 
-class PBRMaterial{
+class PBRMaterial:public Mesh{
 	Shader& shader;
 	Texture2D& albedo;
 	Texture2D& metallic;
@@ -12,9 +12,8 @@ class PBRMaterial{
 
 
 	public:
-	Mesh& mesh;
 	PBRMaterial(
-			Mesh& mesh,
+			const std::string& path,VertexLayout& layout,Shader& shader,int idx,
 			Texture2D& albedo,
 			Texture2D& metallic,
 			Texture2D& roughness,

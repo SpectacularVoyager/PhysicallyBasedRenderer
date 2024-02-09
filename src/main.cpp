@@ -154,8 +154,8 @@ int main(void)
 	Texture2D metallic1("res/textures/Quartz/METALNESS.png",	GL_RGBA,GL_RED,GL_UNSIGNED_BYTE,false,false);
 	Texture2D roughness1("res/textures/Quartz/ROUGHNESS.png",	GL_RGBA,GL_RED,GL_UNSIGNED_BYTE,false,false);
 
-	PBRMaterial pbr1(mesh1,albedo,metallic,roughness,norm);
-	PBRMaterial pbr2(mesh2,albedo1,metallic1,roughness1,norm1);
+	PBRMaterial pbr1("res/models/sphere.obj",layout,shader,0,albedo,metallic,roughness,norm);
+	PBRMaterial pbr2("res/models/sphere.obj",layout,shader,0,albedo1,metallic1,roughness1,norm1);
 
 	Texture2D hdriMap("res/HDRI/meadow_4k.hdr",GL_RGB16F,GL_RGB,GL_FLOAT,true,true);
 	hdriMap.setWrapAndFilter(GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE,GL_LINEAR,GL_LINEAR);
@@ -170,8 +170,8 @@ int main(void)
 	glm::vec3 lightPos(0.0f,0.0f,10.0f);
 
 
-	pbr1.mesh.transform*=glm::translate(glm::mat4(1.0f),glm::vec3(-3.0f,0.0f,0.0f));	
-	pbr2.mesh.transform*=glm::translate(glm::mat4(1.0f),glm::vec3( 3.0f,0.0f,0.0f));	
+	pbr1.transform*=glm::translate(glm::mat4(1.0f),glm::vec3(-3.0f,0.0f,0.0f));	
+	pbr2.transform*=glm::translate(glm::mat4(1.0f),glm::vec3( 3.0f,0.0f,0.0f));	
 	float theta=0;
 	cube.transform*=glm::scale(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,-4.0f,0.0f)),glm::vec3(2.0f));
 

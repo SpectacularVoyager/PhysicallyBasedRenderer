@@ -2,12 +2,13 @@
 
 
 PBRMaterial::PBRMaterial(
-		Mesh& mesh,
+		const std::string& path,VertexLayout& layout,Shader& shader,int idx,
 		Texture2D& albedo,
 		Texture2D& metallic,
 		Texture2D& roughness,
 		Texture2D& normal):
-	mesh(mesh),shader(mesh.getShader()),albedo(albedo),metallic(metallic),roughness(roughness),normal(normal)
+	Mesh(path,layout,shader,idx),
+	shader(this->getShader()),albedo(albedo),metallic(metallic),roughness(roughness),normal(normal)
 
 {
 
@@ -29,6 +30,6 @@ void PBRMaterial::use(const glm::mat4& proj,const glm::mat4& view,const glm::vec
 	shader.setInt("roughnessMap",2);
 	shader.setInt("normalMap",3);
 
-	mesh.Bind();
-	mesh.DrawTransform();
+	this->Bind();
+	this->DrawTransform();
 }
