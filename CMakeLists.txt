@@ -27,3 +27,8 @@ find_package(glm REQUIRED)
 target_link_libraries(project glm::glm)
 find_package(assimp REQUIRED)
 target_link_libraries(project assimp::assimp)
+
+
+FIND_PACKAGE( OpenCV REQUIRED )                              
+INCLUDE_DIRECTORIES( ${OpenCV_INCLUDE_DIRS} )
+TARGET_LINK_LIBRARIES (project ${OpenCV_LIBS})         

@@ -14,6 +14,8 @@
 #include<glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include"include/PBRMaterial.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "include/stb_image_write.h"
 
 void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
 		GLenum severity, GLsizei length,
@@ -32,6 +34,7 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
 */ 
 #define WIDTH  1920
 #define HEIGHT 1080
+static GLubyte *pixels = NULL;
 
 unsigned int captureViews(Shader& shader,const int& map,Texture2D& texture,Mesh& mesh){
 	unsigned int captureFBO;
@@ -87,9 +90,33 @@ unsigned int captureViews(Shader& shader,const int& map,Texture2D& texture,Mesh&
 	glViewport(0,0,WIDTH,HEIGHT);
 	return envCubemap;
 }
+static void create_ppm(char *prefix, int frame_id, unsigned int width, unsigned int height,
+        unsigned int color_max, unsigned int pixel_nbytes, GLubyte *pixels) {
+    size_t i, j, k, cur;
+    enum Constants { max_filename = 256 };
+    char filename[max_filename];
+    snprintf(filename, max_filename, "%s%d.ppm", prefix, frame_id);
+    FILE *f = fopen(filename, "w");
+    fprintf(f, "P3\n%d %d\n%d\n", width, HEIGHT, 255);
+    for (i = 0; i < height; i++) {
+        for (j = 0; j < width; j++) {
+            cur = pixel_nbytes * ((height - i - 1) * width + j);
+            fprintf(f, "%3d %3d %3d ", pixels[cur], pixels[cur + 1], pixels[cur + 2]);
+        }
+        fprintf(f, "\n");
+    }
+    fclose(f);
+}
+static void createPng(char* prefix,int frame_id, unsigned int width, unsigned int height,unsigned char* pixels){
+    enum Constants { max_filename = 256 };
+    char filename[max_filename];
+    snprintf(filename, max_filename, "%s%d.png", prefix, frame_id);
+	stbi_write_png(filename,WIDTH,HEIGHT,4,pixels,WIDTH*4);
+}
 
 int main(void)
 {
+    pixels = (unsigned char*)malloc(4 * WIDTH * HEIGHT);
     GLFWwindow* window;
 
     /* Initialize the library */
@@ -121,6 +148,7 @@ int main(void)
 	glEnable(GL_MULTISAMPLE);  
 
 	glDepthFunc(GL_LEQUAL);  
+	
 
 	VertexLayout layout;
 	layout.addLayout(0, 3);
@@ -138,25 +166,29 @@ int main(void)
 	Shader shaderEnv("res/shaders/env/env.vs","res/shaders/env/env.fs");
 	shaderEnv.compile();
 
-	Mesh mesh1("res/models/sphere.obj",layout,shader,0);
-	Mesh mesh2("res/models/sphere.obj",layout,shader,0);
+	Mesh mesh1("res/models/public/sphere.obj",layout,shader,0);
+	Mesh mesh2("res/models/private/crate.obj",layout,shader,0);
+	//Mesh mesh2("res/models/public/sphere.obj",layout,shader,0);
 
-	Mesh cube("res/models/cube.obj",layout,hdr,0);
-	Mesh cubeMap("res/models/cube.obj",layout,shaderEnv,0);
+	Mesh cube("res/models/public/cube.obj",layout,hdr,0);
+	Mesh cubeMap("res/models/public/cube.obj",layout,shaderEnv,0);
 
-	Texture2D albedo("res/models/rusted/albedo.png",		GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,false,false);
-	Texture2D norm("res/models/rusted/normal.png",			GL_RGBA,GL_RGB,GL_UNSIGNED_BYTE,false,false);
-	Texture2D metallic("res/models/rusted/metallic.png",	GL_RGBA,GL_RED,GL_UNSIGNED_BYTE,false,false);
-	Texture2D roughness("res/models/rusted/roughness.png",	GL_RGBA,GL_RED,GL_UNSIGNED_BYTE,false,false);
+	Texture2D albedo("res/models/private/rusted/albedo.png",		GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,false,false);
+	Texture2D norm("res/models/private/rusted/normal.png",			GL_RGBA,GL_RGB,GL_UNSIGNED_BYTE,false,false);
+	Texture2D metallic("res/models/private/rusted/metallic.png",	GL_RGBA,GL_RED,GL_UNSIGNED_BYTE,false,false);
+	Texture2D roughness("res/models/private/rusted/roughness.png",	GL_RGBA,GL_RED,GL_UNSIGNED_BYTE,false,false);
 
 	Texture2D albedo1("res/textures/Quartz/COL.png",		GL_RGBA,GL_RGB,GL_UNSIGNED_BYTE,false,false);
 	Texture2D norm1("res/textures/Quartz/NRM.png",			GL_RGBA,GL_RGB,GL_UNSIGNED_BYTE,false,false);
 	Texture2D metallic1("res/textures/Quartz/METALNESS.png",	GL_RGBA,GL_RED,GL_UNSIGNED_BYTE,false,false);
 	Texture2D roughness1("res/textures/Quartz/ROUGHNESS.png",	GL_RGBA,GL_RED,GL_UNSIGNED_BYTE,false,false);
 
-	PBRMaterial pbr1("res/models/sphere.obj",layout,shader,0,albedo,metallic,roughness,norm);
-	PBRMaterial pbr2("res/models/sphere.obj",layout,shader,0,albedo1,metallic1,roughness1,norm1);
+	PBRMaterial pbr1("res/models/public/sphere.obj",layout,shader,0,albedo,metallic,roughness,norm);
+	//PBRMaterial pbr1("res/models/private/Dinklage.obj",layout,shader,0,albedo,metallic,roughness,norm);
+	PBRMaterial pbr2("res/models/public/sphere.obj",layout,shader,0,albedo1,metallic1,roughness1,norm1);
+	//PBRMaterial pbr2("res/models/private/Dinklage.obj",layout,shader,0,albedo1,metallic1,roughness1,norm1);
 
+	PBRMaterial pbr3("res/models/private/Dinklage.obj",layout,shader,0,albedo1,metallic1,roughness1,norm1);
 	Texture2D hdriMap("res/HDRI/meadow_4k.hdr",GL_RGB16F,GL_RGB,GL_FLOAT,true,true);
 	hdriMap.setWrapAndFilter(GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE,GL_LINEAR,GL_LINEAR);
 
@@ -170,8 +202,10 @@ int main(void)
 	glm::vec3 lightPos(0.0f,0.0f,10.0f);
 
 
-	pbr1.transform*=glm::translate(glm::mat4(1.0f),glm::vec3(-3.0f,0.0f,0.0f));	
-	pbr2.transform*=glm::translate(glm::mat4(1.0f),glm::vec3( 3.0f,0.0f,0.0f));	
+	pbr1.transform*=glm::translate(glm::mat4(1.0f),glm::vec3(-4.0f,0.0f,0.0f));	
+	pbr2.transform*=glm::translate(glm::mat4(1.0f),glm::vec3( 4.0f,0.0f,0.0f));	
+	pbr3.transform*=glm::scale(glm::mat4(1.0f),glm::vec3( 2.0f,2.0f,2.0f));	
+	pbr3.transform*=glm::translate(glm::mat4(1.0f),glm::vec3( 0.0f,-2.0f,0.0f));	
 	float theta=0;
 	cube.transform*=glm::scale(glm::translate(glm::mat4(1.0f),glm::vec3(0.0f,-4.0f,0.0f)),glm::vec3(2.0f));
 
@@ -179,7 +213,8 @@ int main(void)
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	unsigned int envMap=captureViews(hdr,4,hdriMap,cube);
 	
-
+	int img_count=1;
+	create_ppm("out/tmp", img_count++, WIDTH, HEIGHT, 255, 4, pixels);
 	
     while (!glfwWindowShouldClose(window))
     {
@@ -193,9 +228,11 @@ int main(void)
 		theta+=0.01f;	
 		float r=15.0f;
 		lightPos=glm::vec3(r*std::cos(theta),0.0f,r*std::sin(theta));
+		//lightPos=glm::vec3(10,0.0f,0.0f);
 		
 		pbr1.use(proj,view,viewPos,{lightPos});
 		pbr2.use(proj,view,viewPos,{lightPos});
+		pbr3.use(proj,view,viewPos,{lightPos});
 		hdr.use();
 
 		hdr.setMat4("view",view);
@@ -213,6 +250,11 @@ int main(void)
 		shaderEnv.setInt("equirectangularMap",6);
 		//cubeMap.Bind();
 		//cubeMap.Draw();
+		glPixelStorei(GL_PACK_ALIGNMENT, 1);
+		glReadBuffer(GL_FRONT);
+		glReadPixels(0, 0, WIDTH, HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		//create_ppm("out/tmp", img_count++, WIDTH, HEIGHT, 255, 4, pixels);
+		createPng("out/tmp",img_count++,WIDTH,HEIGHT,pixels);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

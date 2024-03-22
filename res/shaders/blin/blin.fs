@@ -102,7 +102,7 @@ void main()
 		vec3 L = normalize(lightPos - FragPos);
 		float distance    = length(lightPos - FragPos);
 		float attenuation = 1.0 / (distance * distance);
-		vec3 radiance=attenuation*vec3(100.0);
+		vec3 radiance=attenuation*vec3(400.0);
 
 		vec3 H = normalize(L + V);
 
