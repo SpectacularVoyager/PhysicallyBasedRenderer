@@ -250,11 +250,13 @@ int main(void)
 		shaderEnv.setInt("equirectangularMap",6);
 		//cubeMap.Bind();
 		//cubeMap.Draw();
-		glPixelStorei(GL_PACK_ALIGNMENT, 1);
-		glReadBuffer(GL_FRONT);
-		glReadPixels(0, 0, WIDTH, HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-		//create_ppm("out/tmp", img_count++, WIDTH, HEIGHT, 255, 4, pixels);
-		createPng("out/tmp",img_count++,WIDTH,HEIGHT,pixels);
+
+		////FOR STORING
+		//glPixelStorei(GL_PACK_ALIGNMENT, 1);
+		//glReadBuffer(GL_FRONT);
+		//glReadPixels(0, 0, WIDTH, HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		////create_ppm("out/tmp", img_count++, WIDTH, HEIGHT, 255, 4, pixels);
+		//createPng("out/tmp",img_count++,WIDTH,HEIGHT,pixels);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
