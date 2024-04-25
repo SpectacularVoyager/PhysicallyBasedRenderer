@@ -188,7 +188,8 @@ int main(void)
 	PBRMaterial pbr2("res/models/public/sphere.obj",layout,shader,0,albedo1,metallic1,roughness1,norm1);
 	//PBRMaterial pbr2("res/models/private/Dinklage.obj",layout,shader,0,albedo1,metallic1,roughness1,norm1);
 
-	PBRMaterial pbr3("res/models/private/Dinklage.obj",layout,shader,0,albedo1,metallic1,roughness1,norm1);
+	PBRMaterial pbr3("res/models/private/Dinklage.obj",layout,shader,0,albedo,metallic,roughness,norm);
+	//PBRMaterial pbr3("res/models/private/Dinklage.obj",layout,shader,0,albedo1,metallic1,roughness1,norm1);
 	Texture2D hdriMap("res/HDRI/meadow_4k.hdr",GL_RGB16F,GL_RGB,GL_FLOAT,true,true);
 	hdriMap.setWrapAndFilter(GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE,GL_LINEAR,GL_LINEAR);
 
